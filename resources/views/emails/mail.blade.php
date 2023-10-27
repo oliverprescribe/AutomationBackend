@@ -10,7 +10,7 @@
     <body style="font-family:'verdana'; margin:10px;background-color:#252423 ">
             <h1 style="text-align:center; color:white;">Automation</h1>
             <p style="color:white;">Hi Oliver,</p>
-            <p style="color:white;">We wanted to inform you about the current status of the jobs.</p>
+            <p style="color:white;">We want to inform you about the current status of the jobs.</p>
             @if (empty($details['wjn_priority']) && empty($details['ojn_priority']) && empty($details['wjn_routine']) && empty($details['ojn_routine']))
                 <div style="margin-top:50px;background-color:#252423">
                     <p style="color: white">No warning and overdue jobs</p>
@@ -18,7 +18,7 @@
             @endif
             @if (!empty($details['wjn_priority']))
             <div style="margin-top:50px;background-color:#252423">
-                <h3 style="color:orange;">Warning Jobs - Priority</h3>
+                <h3 style="color:orange;">Warning Jobs - Priority ({{count($details['wjn_priority'])}})</h3>
                 <table style="background-color:#252423">
                     <thead>
                         <tr>
@@ -39,7 +39,7 @@
 
             @if (!empty($details['ojn_priority']))
             <div style="margin-top:50px;background-color:#252423">
-                <h3 style="color:red;">Overdue Jobs - Priority</h3>
+                <h3 style="color:red;">Overdue Jobs - Priority ({{count($details['ojn_priority'])}})</h3>
                 <table style="background-color:#252423">
                     <thead>
                         <tr>
@@ -59,7 +59,7 @@
             @endif
             @if (!empty($details['wjn_routine']))
             <div style="margin-top:50px;background-color:#252423">
-                <h3 style="color:orange;">Warning Jobs - Routine</h3>
+                <h3 style="color:orange;">Warning Jobs - Routine ({{count($details['wjn_routine'])}})</h3>
                 <table style="background-color:#252423">
                     <thead>
                         <tr>
@@ -80,7 +80,7 @@
 
             @if (!empty($details['ojn_routine']))
                 <div style="margin-top:50px;background-color:#252423">
-                    <h3 style="color:red;">Overdue Jobs - Routine</h3>
+                    <h3 style="color:red;">Overdue Jobs - Routine ({{count($details['ojn_routine'])}})</h3>
                     <table style="background-color:#252423">
                         <thead>
                             <tr>

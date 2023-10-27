@@ -7,7 +7,7 @@ use App\Http\Controllers\Monitoring;
 use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authentication;
-
+use App\Models\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +30,7 @@ Route::post('/register',[Authentication::class,'register']);
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('/logout',[Authentication::class, 'logout']);
     Route::get('/users',[Authentication::class, 'users']);
-    Route::get('/index',[Index::class,'index']);
+    Route::get('/dashboard',[Index::class,'index']);
     Route::get('/monitoring/{id}', [Monitoring::class, 'index']);
     Route::get('/monitoring/{id}/{status}',[Monitoring::class,'status']);
 

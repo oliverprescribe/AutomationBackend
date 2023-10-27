@@ -7,6 +7,7 @@ use App\Mail\Email;
 use App\Jobs\MailJob;
 use App\Models\Client;
 use App\Models\Letter;
+use App\Models\UserRole;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -102,13 +103,26 @@ class SendEmails extends Command
              }
         }
 
+        //query all management user role
+        $management = UserRole::with(['role','user'])
+        ->whereHas('role', function($query){
+            $query->where('id',5);
+        })
+        ->get();
+
+        $management_email = [];
+        foreach ($management as $manager) {
+           $management_email [] = $manager->user->email;
+        }
+
         $details = [
             'email' => 'o.rodriguez@prescribe-digital.com',
             'subject'=> 'Automation',
             'ojn_priority' => $ojn_priority,
             'wjn_priority' => $wjn_priority,
             'ojn_routine' => $ojn_routine,
-            'wjn_routine' => $wjn_routine
+            'wjn_routine' => $wjn_routine,
+            'management_email' => $management_email
         ];
 
         MailJob::dispatch($details)->onQueue('emails');

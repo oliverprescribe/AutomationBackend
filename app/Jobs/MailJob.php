@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\Email;
+use App\Models\UserRole;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
@@ -32,6 +33,6 @@ class MailJob implements ShouldQueue
     public function handle(): void
     {
 
-        Mail::to($this->details['email'])->send(new Email($this->details));
+        Mail::to($this->details['management_email'])->send(new Email($this->details));
     }
 }
