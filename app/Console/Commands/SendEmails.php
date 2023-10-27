@@ -35,9 +35,17 @@ class SendEmails extends Command
     {
 
          //query all letters where status is not completed and withdrawn
-        //  $letters = Letter::whereNot('status', 'completed')->whereNot('status','withdrawn')->get();
+         $letters = Letter::whereNot('status', 'completed')->whereNot('status','withdrawn')->get();
 
-         $letters = Letter::where('id', '190')->get();
+        //  $letters = Letter::where('id', '190')->get();
+
+         //job Numbers priority
+        $ojn_priority = [];
+        $wjn_priority = [];
+
+        //job Numbers routine
+        $ojn_routine = [];
+        $wjn_routine = [];
 
 
 
@@ -73,55 +81,37 @@ class SendEmails extends Command
                 if ($letter->priority == 'priority' ) {
                     if ($tat >= 12 && $tat <= 24 ) {
 
-                        $details = [
-                            'email' => 'o.rodriguez@prescribe-digital.com',
-                            'subject'=> 'Automation Job Warning',
-                            'message' => 'This is to notify you that a letter is nearing its due date. Its been '.$tat.' hrs since it was assigned.',
-                            'job_number' => $letter->job_number,
-                            'priority' => $letter->priority
-                        ];
-
-                        MailJob::dispatch($details)->onQueue('emails');
+                        $wjn_priority [] = $letter->job_number;
 
                     }else if($tat > 24){
-                        $details = [
-                            'email' => 'o.rodriguez@prescribe-digital.com',
-                            'subject'=> 'Automation Job Overdue',
-                            'message' => 'This is to notify you that a letter is already overdue. Its been '.$tat.' hrs since it was assigned.',
-                            'job_number' => $letter->job_number,
-                            'priority' => $letter->priority
-                        ];
 
-                        MailJob::dispatch($details)->onQueue('emails');
+                        $ojn_priority [] = $letter->job_number;
                     }
                 }else{
                     if ($tat >= 24 && $tat <= 48 ) {
-                        $details = [
-                            'email' => 'o.rodriguez@prescribe-digital.com',
-                            'subject'=> 'Automation Job Warning',
-                            'message' => 'This is to notify you that a letter is nearing its due date. Its been '.$tat.' hrs since it was assigned.',
-                            'job_number' => $letter->job_number,
-                            'priority' => $letter->priority
-                        ];
 
-                        MailJob::dispatch($details)->onQueue('emails');
+                        $wjn_routine [] = $letter->job_number;
+
                     }else if ($tat > 48){
-                        $details = [
-                            'email' => 'o.rodriguez@prescribe-digital.com',
-                            'subject'=> 'Automation Job Overdue',
-                            'message' => 'This is to notify you that a letter is already overdue. Its been '.$tat.' hrs since it was assigned.',
-                            'job_number' => $letter->job_number,
-                            'priority' => $letter->priority
-                        ];
 
-                        MailJob::dispatch($details)->onQueue('emails');
+                        $ojn_routine [] = $letter->job_number;
+
                     }
                 }
 
              }
         }
 
+        $details = [
+            'email' => 'o.rodriguez@prescribe-digital.com',
+            'subject'=> 'Automation',
+            'ojn_priority' => $ojn_priority,
+            'wjn_priority' => $wjn_priority,
+            'ojn_routine' => $ojn_routine,
+            'wjn_routine' => $wjn_routine
+        ];
 
+        MailJob::dispatch($details)->onQueue('emails');
 
         // $letter = Letter::find(172);
         // Mail::to('o.rodriguez@prescribe-digital.com')->send(new Email($letter));

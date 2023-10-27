@@ -27,6 +27,8 @@ class Authentication extends Controller
 
         ]);
 
+
+
         $user = User::create([
             'email' => $request->email,
             'password'=> Hash::make($request->password),
@@ -67,7 +69,6 @@ class Authentication extends Controller
 
             return response()->json([
                 'user' => $user,
-
                 'token' => $token
             ]);
 
@@ -75,7 +76,7 @@ class Authentication extends Controller
 
         return response()->json([
             'message' => 'Invalid login details'
-        ]);
+        ], 401);
 
     }
 

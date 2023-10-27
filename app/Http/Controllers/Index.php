@@ -15,7 +15,7 @@ class Index extends Controller
      */
     public function index()
     {
-        $data = Dashboard::all()->count();
+        $data = Dashboard::all();
         $user = Auth::user();
 
         return response()->json([

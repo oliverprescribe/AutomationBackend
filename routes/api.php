@@ -23,7 +23,7 @@ use App\Http\Controllers\Authentication;
 Route::post('/login',[Authentication::class,'login']);
 Route::post('/register',[Authentication::class,'register']);
 
-Route::get('/email',[Emails::class,'index']);
+// Route::get('/email',[Emails::class,'index']);
 
 
 
