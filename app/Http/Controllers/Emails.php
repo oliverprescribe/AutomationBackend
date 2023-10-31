@@ -20,7 +20,7 @@ class Emails extends Controller
     public function index(){
 
          //query all letters where status is not completed and withdrawn
-         $letters = Letter::whereNotIn('status', ['completed', 'withdrawn'])
+         $letters = Letter::whereNotIn('status', ['completed', 'withdrawn'])->where('date_completed', null)
          ->orderBy('client_id', 'ASC')->with('client')->get();
 
          //job Numbers priority

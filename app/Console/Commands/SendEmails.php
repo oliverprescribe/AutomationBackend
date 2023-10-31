@@ -39,8 +39,7 @@ class SendEmails extends Command
         //  $letters = Letter::whereNot('status', 'completed')->whereNot('status','withdrawn')->get();
 
         //query all letters where status is not completed and withdrawn
-         $letters = Letter::whereNotIn('status', ['completed', 'withdrawn'])
-         ->orderBy('client_id', 'ASC')->with('client')->get();
+         $letters = Letter::whereNotIn('status', ['completed', 'withdrawn'])->where('date_completed', null)->orderBy('client_id', 'ASC')->with('client')->get();
 
         //  $letters = Letter::where('id', '190')->get();
 
@@ -107,10 +106,11 @@ class SendEmails extends Command
              }
         }
 
+
         //query all management user role
         $management = UserRole::with(['role','user'])
-        ->whereHas('role', function($query){
-            $query->where('id',5);
+        ->whereHas('role', function($query) {
+            $query->where('name','Management');
         })->get();
 
         //get all email management
@@ -131,7 +131,7 @@ class SendEmails extends Command
         ];
 
         //dispatch details
-        MailJob::dispatch($details)->onQueue('emails');
+        MailJob::dispatch($details)->onQueue('email');
 
 
     }

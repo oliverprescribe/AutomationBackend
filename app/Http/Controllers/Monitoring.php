@@ -21,7 +21,7 @@ class Monitoring extends Controller
     public function index($id)
     {
         //get client based on client id
-        $client = Client::find($id);
+        $client = Letter::where('client_id', $id)->whereNotIn('status', ['completed', 'withdrawn'])->where('date_completed', null)->get();
 
         if (count($client) > 0) {
             return response()->json([
@@ -38,11 +38,7 @@ class Monitoring extends Controller
 
     public function status($id, $status){
 
-        $letters = Letter::where('status',$status)
-        ->with(['author:id,first_name','client:id,name','department:id,name','assignments.user:id,first_name'])
-        ->whereHas('client', function ($query)  use ($id){
-            $query->where('id', $id);
-        })->get();
+        $letters = Letter::where('client_id', $id)->where('status',$status )->where('date_completed', null)->get();
 
         if (count($letters) > 0) {
             return response()->json([
