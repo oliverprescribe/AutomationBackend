@@ -35,8 +35,12 @@ class SendEmails extends Command
     public function handle()
     {
 
-         //query all letters where status is not completed and withdrawn
-         $letters = Letter::whereNot('status', 'completed')->whereNot('status','withdrawn')->get();
+
+        //  $letters = Letter::whereNot('status', 'completed')->whereNot('status','withdrawn')->get();
+
+        //query all letters where status is not completed and withdrawn
+         $letters = Letter::whereNotIn('status', ['completed', 'withdrawn'])
+         ->orderBy('client_id', 'ASC')->with('client')->get();
 
         //  $letters = Letter::where('id', '190')->get();
 
@@ -79,23 +83,23 @@ class SendEmails extends Command
                  }, $current_PH_date_time);
 
                  //check priority then send warning or overdue emails
-                if ($letter->priority == 'priority' ) {
+                 if ($letter->priority == 'priority' ) {
                     if ($tat >= 12 && $tat <= 24 ) {
 
-                        $wjn_priority [] = $letter->job_number;
+                        $wjn_priority [] = [$letter->client->name,$letter->job_number];
 
                     }else if($tat > 24){
 
-                        $ojn_priority [] = $letter->job_number;
+                        $ojn_priority [] = [$letter->client->name,$letter->job_number];
                     }
                 }else{
                     if ($tat >= 24 && $tat <= 48 ) {
 
-                        $wjn_routine [] = $letter->job_number;
+                        $wjn_routine [] = [$letter->client->name,$letter->job_number];
 
                     }else if ($tat > 48){
 
-                        $ojn_routine [] = $letter->job_number;
+                        $ojn_routine [] = [$letter->client->name ?? '',$letter->job_number];
 
                     }
                 }
@@ -107,14 +111,15 @@ class SendEmails extends Command
         $management = UserRole::with(['role','user'])
         ->whereHas('role', function($query){
             $query->where('id',5);
-        })
-        ->get();
+        })->get();
 
+        //get all email management
         $management_email = [];
         foreach ($management as $manager) {
            $management_email [] = $manager->user->email;
         }
 
+        //store data in details array
         $details = [
             'email' => 'o.rodriguez@prescribe-digital.com',
             'subject'=> 'Automation',
@@ -125,10 +130,8 @@ class SendEmails extends Command
             'management_email' => $management_email
         ];
 
+        //dispatch details
         MailJob::dispatch($details)->onQueue('emails');
-
-        // $letter = Letter::find(172);
-        // Mail::to('o.rodriguez@prescribe-digital.com')->send(new Email($letter));
 
 
     }

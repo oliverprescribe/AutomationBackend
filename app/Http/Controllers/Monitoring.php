@@ -20,22 +20,18 @@ class Monitoring extends Controller
 
     public function index($id)
     {
-        // $department = Department::find(1);
-        // $department->whereHas('letters', function($query){
-        //     return $query->whereIn('status', ['for_typing', 'being_typed']);
-        // });
-
+        //get client based on client id
         $client = Client::find($id);
 
-        if ($client) {
+        if (count($client) > 0) {
             return response()->json([
                 'client' => $client
-            ]);
+            ], 200);
         }
 
         return response()->json([
             'message' => 'No client found'
-        ]);
+        ], 404);
 
 
     }
@@ -43,22 +39,20 @@ class Monitoring extends Controller
     public function status($id, $status){
 
         $letters = Letter::where('status',$status)
-        // ->select('id','reference','job_number','created_at', 'created_at', 'author_created')
         ->with(['author:id,first_name','client:id,name','department:id,name','assignments.user:id,first_name'])
         ->whereHas('client', function ($query)  use ($id){
             $query->where('id', $id);
-        })
-        ->get();
+        })->get();
 
-        if (empty($letters)) {
+        if (count($letters) > 0) {
             return response()->json([
                 'letters'=>  $letters
-            ]);
+            ],200);
         }
 
         return response()->json([
             'message' => 'No record found'
-        ]);
+        ],404);
 
 
 

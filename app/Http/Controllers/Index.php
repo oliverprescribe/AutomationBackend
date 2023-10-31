@@ -21,7 +21,6 @@ class Index extends Controller
         return response()->json([
             'data'=> $data,
             'user'=> $user,
-            'message' => "success"
         ]);
     }
 

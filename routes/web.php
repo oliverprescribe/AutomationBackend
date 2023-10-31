@@ -17,4 +17,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/mail', [Emails::class, 'index']);
+Route::get('/mail', [Emails::class, 'index']);

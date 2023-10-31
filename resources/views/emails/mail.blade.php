@@ -16,90 +16,185 @@
                     <p style="color: white">No warning and overdue jobs</p>
                 </div>
             @endif
+
             @if (!empty($details['wjn_priority']))
-            <div style="margin-top:50px;background-color:#252423">
-                <h3 style="color:orange;">Warning Jobs - Priority ({{count($details['wjn_priority'])}})</h3>
-                <table style="background-color:#252423">
-                    <thead>
-                        <tr>
-                            <th style="color:orange;" colspan="12">Job Numbers</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($details['wjn_priority'] as $index => $detail)
-                            <td style="color:white;">{{ $detail }}</td>
-                            @if(($index + 1) % 12 == 0)
-                                </tr><tr>
-                            @endif
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                <div style="margin-top:50px;background-color:#252423">
+                    <h3 style="color:orange;">Warning Jobs - Priority ({{count($details['wjn_priority'])}})</h3>
+                    <table style="background-color:#252423; color:white;">
+                        <thead>
+                            <tr>
+                                <th colspan="10">Job Numbers</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $previousName = null;
+                                $columnCount = 0;
+                            @endphp
+
+                            @foreach($details['wjn_priority'] as $index => $detail)
+                                @if($detail[0] !== $previousName)
+                                    @if($previousName !== null)
+                                        </tr>
+                                    @endif
+                                    <tr>
+                                        <td colspan="10" style="color:blue;"> <h3>{{ $detail[0] }}</h3></td>
+                                    </tr>
+                                    <tr>
+                                    @php
+                                        $previousName = $detail[0];
+                                        $columnCount = 0;
+                                    @endphp
+                                @endif
+
+                                <td>{{ $detail[1] }}</td>
+
+                                @php
+                                    $columnCount++;
+                                    if($columnCount == 10) {
+                                        $columnCount = 0;
+                                        echo '</tr><tr>';
+                                    }
+                                @endphp
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             @endif
 
             @if (!empty($details['ojn_priority']))
-            <div style="margin-top:50px;background-color:#252423">
-                <h3 style="color:red;">Overdue Jobs - Priority ({{count($details['ojn_priority'])}})</h3>
-                <table style="background-color:#252423">
-                    <thead>
-                        <tr>
-                            <th style="color:red;" colspan="12">Job Numbers</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($details['ojn_priority'] as $index => $detail)
-                            <td style="color:white;">{{ $detail }}</td>
-                            @if(($index + 1) % 12 == 0)
-                                </tr><tr>
-                            @endif
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                <div style="margin-top:50px;background-color:#252423">
+                    <h3 style="color:red;">Overdue Jobs - Priority ({{count($details['ojn_priority'])}})</h3>
+                    <table style="background-color:#252423; color:white;">
+                        <thead>
+                            <tr>
+                                <th colspan="10">Job Numbers</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $previousName = null;
+                                $columnCount = 0;
+                            @endphp
+
+                            @foreach($details['ojn_priority'] as $index => $detail)
+                                @if($detail[0] !== $previousName)
+                                    @if($previousName !== null)
+                                        </tr>
+                                    @endif
+                                    <tr>
+                                        <td colspan="10" style="color:blue;"> <h3>{{ $detail[0] }}</h3></td>
+                                    </tr>
+                                    <tr>
+                                    @php
+                                        $previousName = $detail[0];
+                                        $columnCount = 0;
+                                    @endphp
+                                @endif
+
+                                <td>{{ $detail[1] }}</td>
+
+                                @php
+                                    $columnCount++;
+                                    if($columnCount == 10) {
+                                        $columnCount = 0;
+                                        echo '</tr><tr>';
+                                    }
+                                @endphp
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             @endif
             @if (!empty($details['wjn_routine']))
-            <div style="margin-top:50px;background-color:#252423">
-                <h3 style="color:orange;">Warning Jobs - Routine ({{count($details['wjn_routine'])}})</h3>
-                <table style="background-color:#252423">
-                    <thead>
-                        <tr>
-                            <th style="color:orange;" colspan="12">Job Numbers</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($details['wjn_routine'] as $index => $detail)
-                            <td style="color:white;">{{ $detail }}</td>
-                            @if(($index + 1) % 12 == 0)
-                                </tr><tr>
-                            @endif
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                <div style="margin-top:50px;background-color:#252423">
+                    <h3 style="color:orange;">Warning Jobs - Routine ({{count($details['wjn_routine'])}})</h3>
+                    <table style="background-color:#252423; color:white;">
+                        <thead>
+                            <tr>
+                                <th colspan="10">Job Numbers</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $previousName = null;
+                                $columnCount = 0;
+                            @endphp
+
+                            @foreach($details['wjn_routine'] as $index => $detail)
+                                @if($detail[0] !== $previousName)
+                                    @if($previousName !== null)
+                                        </tr>
+                                    @endif
+                                    <tr>
+                                        <td colspan="10" style="color:blue;"> <h3>{{ $detail[0] }}</h3></td>
+                                    </tr>
+                                    <tr>
+                                    @php
+                                        $previousName = $detail[0];
+                                        $columnCount = 0;
+                                    @endphp
+                                @endif
+
+                                <td>{{ $detail[1] }}</td>
+
+                                @php
+                                    $columnCount++;
+                                    if($columnCount == 10) {
+                                        $columnCount = 0;
+                                        echo '</tr><tr>';
+                                    }
+                                @endphp
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             @endif
 
             @if (!empty($details['ojn_routine']))
                 <div style="margin-top:50px;background-color:#252423">
                     <h3 style="color:red;">Overdue Jobs - Routine ({{count($details['ojn_routine'])}})</h3>
-                    <table style="background-color:#252423">
+                    <table style="background-color:#252423; color:white;">
                         <thead>
                             <tr>
-                                <th style="color:red;" colspan="12">Job Numbers</th>
+                                <th colspan="10">Job Numbers</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $previousName = null;
+                                $columnCount = 0;
+                            @endphp
+
                             @foreach($details['ojn_routine'] as $index => $detail)
-                                <td style="color:white;">{{ $detail }}</td>
-                                @if(($index + 1) % 12 == 0)
-                                    </tr><tr>
+                                @if($detail[0] !== $previousName)
+                                    @if($previousName !== null)
+                                        </tr>
+                                    @endif
+                                    <tr>
+                                        <td colspan="10" style="color:blue;"> <h3>{{ $detail[0] }}</h3></td>
+                                    </tr>
+                                    <tr>
+                                    @php
+                                        $previousName = $detail[0];
+                                        $columnCount = 0;
+                                    @endphp
                                 @endif
+
+                                <td>{{ $detail[1] }}</td>
+
+                                @php
+                                    $columnCount++;
+                                    if($columnCount == 10) {
+                                        $columnCount = 0;
+                                        echo '</tr><tr>';
+                                    }
+                                @endphp
                             @endforeach
                         </tbody>
                     </table>
                 </div>
             @endif
             <p style=" font-style:italic;color:white;margin-top:50px;">This is autogenerated email.</p>
-
-
     </body>
 </html>
