@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 
 use App\Models\Client;
+use App\Models\Letter;
 use App\Models\Dashboard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -76,7 +77,7 @@ class Index extends Controller
         //
     }
 
-    public function test(){
+    public function automationEmailTest(){
 
         $custom_date = '2023-11-1 7:00:00';
 
@@ -110,5 +111,48 @@ class Index extends Controller
             'sample' => $current_PH_date_time->toDateTimeString()
 
         ]);
+    }
+
+    public function deleteLetter(){
+
+        // $letters = Letter::whereIn('status',['completed','withdrawn'])
+        // ->get();
+
+        $letters = Letter::where('id',174)
+        ->get();
+
+        $letter_id = [];
+
+        foreach ($letters as $letter) {
+            if($letter->date_return != null){
+                if($letter->date_return->setTimezone('Europe/London')->diffInMonths(Carbon::now()->setTimezone('Europe/London')) > 3){
+                    $letter_id [] = $letter->id;
+                }
+            }
+        }
+
+
+        if (count($letter_id) > 0) {
+
+            foreach ($letter_id as $id) {
+                $letter = Letter::find($id);
+                if ($letter){
+                    $letter->assignments()->delete();
+                    $letter->audio()->delete();
+                    $letter->letter_comments()->delete();
+                    $letter->uploaders()->delete();
+                    $letter->delete();
+                }
+            }
+        }else {
+            return response()->json([
+                "message" => 'No letter found!'
+            ],404);
+        }
+
+        return response()->json([
+            "message" => 'Successfully deleted'
+        ]);
+
     }
 }

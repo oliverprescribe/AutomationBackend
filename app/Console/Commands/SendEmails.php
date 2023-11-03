@@ -123,6 +123,7 @@ class SendEmails extends Command
         $details = [
             'email' => 'o.rodriguez@prescribe-digital.com',
             'subject'=> 'Automation',
+            'purpose'=> 'notifyJobs',
             'ojn_priority' => $ojn_priority,
             'wjn_priority' => $wjn_priority,
             'ojn_routine' => $ojn_routine,

@@ -19,5 +19,7 @@ Route::get('/', function () {
 });
 
 Route::get('/mail', [Emails::class, 'index']);
-Route::get('/timedifference', [Index::class, 'test']);
+Route::get('/timedifference', [Index::class, 'automationEmailTest']);
+Route::get('/letterdelete', [Index::class, 'deleteLetter']);
+
 

@@ -31,22 +31,32 @@ class Email extends Mailable
      */
     public function headers(): Headers
 {
-    if( !empty($this->details['ojn_priority']) ||  !empty($this->details['ojn_routine']) ){
-        return new Headers(
-
-            text: [
-                'X-Priority' => '1',
-                'X-MSMail-Priority' => 'High',
-                'Importance' => 'High',
-            ],
-        );
-    }else {
+    if($this->details['purpose'] == 'deleteLetter'){
         return new Headers(
             text: [
 
             ],
         );
+    }elseif($this->details['purpose'] == 'notifyJobs'){
+
+        if( !empty($this->details['ojn_priority']) ||  !empty($this->details['ojn_routine']) ){
+            return new Headers(
+
+                text: [
+                    'X-Priority' => '1',
+                    'X-MSMail-Priority' => 'High',
+                    'Importance' => 'High',
+                ],
+            );
+        }else {
+            return new Headers(
+                text: [
+
+                ],
+            );
+        }
     }
+
 
 }
     public function envelope(): Envelope
@@ -62,14 +72,22 @@ class Email extends Mailable
      */
     public function content(): Content
     {
+        if($this->details['purpose'] == 'deleteLetter'){
+            return new Content(
+                view: 'emails.delete_letter_mail',
+                with: [
+                    'details' => $this->details,
+                ],
+            );
+        }elseif($this->details['purpose'] == 'notifyJobs'){
 
-
-        return new Content(
-            view: 'emails.mail',
-            with: [
-                'details' => $this->details,
-            ],
-        );
+            return new Content(
+                view: 'emails.job_mail',
+                with: [
+                    'details' => $this->details,
+                ],
+            );
+        }
     }
 
     /**
