@@ -13,6 +13,8 @@ class Authentication extends Controller
 {
 
     public function register(Request $request){
+
+        //validate input
         $request->validate([
             'email'=> 'required|string|email|unique:users',
             'password' =>'required|confirmed',
@@ -28,7 +30,7 @@ class Authentication extends Controller
         ]);
 
 
-
+        //create user if success
         $user = User::create([
             'email' => $request->email,
             'password'=> Hash::make($request->password),
@@ -43,7 +45,7 @@ class Authentication extends Controller
         ]);
 
 
-
+        //return a message
         return response()->json([
             'message' => 'register sucessfully',
             'user' => $user
@@ -52,20 +54,19 @@ class Authentication extends Controller
 
     public function login(Request $request){
 
+        //validate login data
         $request->validate([
             'username' => 'required',
             'password' => 'required'
         ]);
 
+        //check credentials
         $credentials = $request->only('username','password');
         if(Auth::attempt($credentials)){
 
             $user = Auth::user();
 
             $token =  $user->createToken('Auth Api')->plainTextToken;
-
-            // $user->format('ph/manila')->(created_at)
-
 
             return response()->json([
                 'user' => $user,
@@ -74,6 +75,7 @@ class Authentication extends Controller
 
         }
 
+        //return message if invalid credentials
         return response()->json([
             'message' => 'Invalid login details'
         ], 401);
@@ -82,6 +84,7 @@ class Authentication extends Controller
 
     public function logout(){
 
+        //delete token of current user
         Auth::user()->tokens()->delete();
 
         return response()->json([

@@ -78,29 +78,37 @@ class Index extends Controller
 
     public function test(){
 
-        $custom_date = '2021-06-05 11:32:53';
+        $custom_date = '2023-11-1 7:00:00';
 
-        $ph_date_time = Carbon::parse($custom_date)->setTimezone('Asia/Manila');
-        $current_PH_date_time = Carbon::now();
+        $uk_to_ph_time = Carbon::parse($custom_date)->setTimezone('Asia/Manila');
+        $current_PH_date_time = Carbon::now()->setTimezone('Asia/Manila');
 
           //store holidays into array base on client country
           $client_holidays = [];
 
-          $holidays = Client::where('id', $custom_date)->with(['country.holidays'])
+          $holidays = Client::where('id', 1)->with(['country.holidays'])
           ->get();
 
 
           //loop through hollidays then store holiday_date to client_holidays
+          $time_zone = null;
           foreach ($holidays as $client) {
-              $time_zone =$client->country->timezone;
+              $time_zone = $client->country->timezone;
               foreach ($client->country->holidays as $holiday) {
                   $client_holidays[] = $holiday->holiday_date;
               }
           }
 
-        //generate time difference excluding weekends and holidays
-        $tat = $ph_date_time->diffInHoursFiltered(function (Carbon $date) use ($client_holidays, $time_zone){
+    //     //generate time difference excluding weekends and holidays
+        $tat = $uk_to_ph_time->diffInHoursFiltered(function (Carbon $date) use ($client_holidays, $time_zone){
         return $date->isWeekday() && !in_array(Carbon::parse($date->format('Y-m-d'))->setTimezone($time_zone), $client_holidays);
     }, $current_PH_date_time);
+
+        return response()->json([
+            'tat' => $tat,
+            'now' => $uk_to_ph_time->toDateTimeString(),
+            'sample' => $current_PH_date_time->toDateTimeString()
+
+        ]);
     }
 }

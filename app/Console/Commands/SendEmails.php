@@ -58,8 +58,8 @@ class SendEmails extends Command
              foreach ($letters as $letter) {
 
                  //convert uk time column into ph time
-                 $ph_date_time = Carbon::parse($letter->created_at)->setTimezone('Asia/Manila');
-                 $current_PH_date_time = Carbon::now();
+                 $uk_to_ph_time = Carbon::parse($letter->created_at)->setTimezone('Asia/Manila');
+                 $current_PH_date_time = Carbon::now()->setTimezone('Asia/Manila');
 
                  //query all holidays per client country
                  $holidays = Client::where('id', $letter->client_id)->with(['country.holidays'])
@@ -77,7 +77,7 @@ class SendEmails extends Command
                  }
 
                  //generate time difference excluding weekends and holidays
-                 $tat = $ph_date_time->diffInHoursFiltered(function (Carbon $date) use ($client_holidays, $time_zone){
+                 $tat = $uk_to_ph_time->diffInHoursFiltered(function (Carbon $date) use ($client_holidays, $time_zone){
                      return $date->isWeekday() && !in_array(Carbon::parse($date->format('Y-m-d'))->setTimezone($time_zone), $client_holidays);
                  }, $current_PH_date_time);
 
