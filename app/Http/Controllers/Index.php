@@ -147,7 +147,7 @@ class Index extends Controller
         }else {
             return response()->json([
                 "message" => 'No letter found!'
-            ],404);
+            ]);
         }
 
         return response()->json([

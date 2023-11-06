@@ -23,31 +23,31 @@ class Monitoring extends Controller
     public function index(){
         //query dashboard, user and clients
         $datas = Dashboard::all();
-        $user = Auth::user();
+        $users = Auth::user();
         $clients = Client::all('id','name');
 
         return response()->json([
             'data'=> $datas,
-            'user'=> $user,
+            'user'=> $users,
             'client' => $clients
         ]);
     }
 
     public function client($id)
     {
-        //get client based on client id
-        $client = Letter::where('client_id', $id)->whereNotIn('status', ['completed', 'withdrawn'])->where('date_completed', null)->get();
+        //query letter based on client id
+        $clients = Letter::where('client_id', $id)->whereNotIn('status', ['completed', 'withdrawn'])->where('date_completed', null)->get();
 
-        if (count($client) > 0) {
+        if (count($clients) > 0) {
             return response()->json([
-                'client' => $client
+                'clients' => $clients
             ], 200);
         }
 
          //return message when no record found
         return response()->json([
             'message' => 'No client found'
-        ], 404);
+        ]);
 
 
     }
@@ -70,7 +70,7 @@ class Monitoring extends Controller
         //return message when no record found
         return response()->json([
             'message' => 'No record found'
-        ],404);
+        ]);
 
 
 

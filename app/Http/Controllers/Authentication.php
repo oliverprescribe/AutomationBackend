@@ -66,7 +66,7 @@ class Authentication extends Controller
 
             $user = Auth::user();
 
-            $token =  $user->createToken('Auth Api')->plainTextToken;
+            $token =  $user->createToken('AuthApi')->plainTextToken;
 
             return response()->json([
                 'user' => $user,

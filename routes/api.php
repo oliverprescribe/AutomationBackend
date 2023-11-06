@@ -22,17 +22,22 @@ use App\Models\Dashboard;
 
 //login route
 Route::post('/login',[Authentication::class,'login']);
+
 //register route
 Route::post('/register',[Authentication::class,'register']);
 
 //user must be login to access this routes
 Route::middleware('auth:sanctum')->group(function(){
+
     //logout route
     Route::post('/logout',[Authentication::class, 'logout']);
+
     //get dashboard, user and client data
     Route::get('/monitoring',[Monitoring::class,'index']);
+
     // get letters based on client
     Route::get('/monitoring/{id}', [Monitoring::class, 'client']);
+
     //get client's letters based on its status
     Route::get('/monitoring/{id}/{status}',[Monitoring::class,'status']);
 });

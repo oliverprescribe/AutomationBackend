@@ -31,7 +31,7 @@ class LetterDelete extends Command
      */
     public function handle()
     {
-
+        //query letters with status completed and withdrawn
         // $letters = Letter::whereIn('status',['completed','withdrawn'])
         // ->get();
         $letters = Letter::where('id',176)
@@ -39,10 +39,12 @@ class LetterDelete extends Command
 
         $letter_id = [];
 
+        //get all letter id's that have a time difference of over 3 months
         foreach ($letters as $letter) {
             if($letter->date_return != null){
                 if($letter->date_return->setTimezone('Europe/London')->diffInMonths(Carbon::now()->setTimezone('Europe/London')) > 3){
                     $letter_id [] = $letter->id;
+
                 }
             }
         }
@@ -50,6 +52,7 @@ class LetterDelete extends Command
 
         if (count($letter_id) > 0) {
 
+            //delete all letter from different relationships
             foreach ($letter_id as $id) {
                 $letter = Letter::find($id);
                 if ($letter){
@@ -71,7 +74,7 @@ class LetterDelete extends Command
             foreach ($management as $manager) {
                 $management_email [] = $manager->user->email;
             }
-
+            
             $details = [
                 'email' => 'o.rodriguez@prescribe-digital.com',
                 'subject'=> 'Automation',
@@ -79,7 +82,7 @@ class LetterDelete extends Command
                 'management_email' => $management_email
             ];
 
-
+            //send mail
             Mail::to($details['management_email'])->send(new Email($details));
 
         }else {
