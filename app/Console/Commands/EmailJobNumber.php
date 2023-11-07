@@ -69,20 +69,20 @@ class EmailJobNumber extends Command
                  if ($letter->priority == 'priority' ) {
                     if ($tat >= 12 && $tat <= 24 ) {
 
-                        $wjn_priority [] = $this->get_name_Job_number($letter->client->name,$letter->job_number);
+                        $wjn_priority [] = [$letter->client->name, $letter->job_number];
 
                     }else if($tat > 24){
 
-                        $ojn_priority [] = $this->get_name_Job_number($letter->client->name,$letter->job_number);
+                        $ojn_priority [] = [$letter->client->name, $letter->job_number];
                     }
                 }else{
                     if ($tat >= 24 && $tat <= 48 ) {
 
-                        $wjn_routine [] = $this->get_name_Job_number($letter->client->name,$letter->job_number);
+                        $wjn_routine [] = [$letter->client->name, $letter->job_number];
 
                     }else if ($tat > 48){
 
-                        $ojn_routine [] = $this->get_name_Job_number($letter->client->name ?? '',$letter->job_number);
+                        $ojn_routine [] = [$letter->client->name ?? '', $letter->job_number];
 
                     }
                 }
@@ -156,10 +156,6 @@ class EmailJobNumber extends Command
             })->get()
         ->pluck('user.email')
         ->toArray();
-    }
-
-    public function get_name_Job_number($client_name,$job_number){
-        return [$client_name, $job_number];
     }
 
 
