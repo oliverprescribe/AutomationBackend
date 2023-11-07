@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 
-class Authentication extends Controller
+class AuthenticationController extends Controller
 {
 
     public function register(Request $request){

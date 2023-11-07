@@ -2,7 +2,9 @@
 
 namespace App\Jobs;
 
+use App\Console\Commands\EmailJobNumber;
 use App\Mail\Email;
+use App\Mail\JobNumberMail;
 use App\Models\UserRole;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Mail;
@@ -12,7 +14,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
-class MailJob implements ShouldQueue
+class EmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -33,6 +35,6 @@ class MailJob implements ShouldQueue
     public function handle(): void
     {
 
-        Mail::to($this->details['management_email'])->send(new Email($this->details));
+        Mail::to($this->details['management_email'])->send(new JobNumberMail($this->details));
     }
 }

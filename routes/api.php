@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Index;
-use App\Http\Controllers\Emails;
-use App\Http\Controllers\Monitoring;
+use App\Http\Controllers\IndexController;
+use App\Http\Controllers\EmailsController;
+use App\Http\Controllers\MonitoringController;
 use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Authentication;
+use App\Http\Controllers\AuthenticationController;
 use App\Models\Dashboard;
 
 /*
@@ -21,24 +21,24 @@ use App\Models\Dashboard;
 */
 
 //login route
-Route::post('/login',[Authentication::class,'login']);
+Route::post('/login',[AuthenticationController::class,'login']);
 
 //register route
-Route::post('/register',[Authentication::class,'register']);
+Route::post('/register',[AuthenticationController::class,'register']);
 
 //user must be login to access this routes
 Route::middleware('auth:sanctum')->group(function(){
 
     //logout route
-    Route::post('/logout',[Authentication::class, 'logout']);
+    Route::post('/logout',[AuthenticationController::class, 'logout']);
 
     //get dashboard, user and client data
-    Route::get('/monitoring',[Monitoring::class,'index']);
+    Route::get('/monitoring',[MonitoringController::class,'index']);
 
     // get letters based on client
-    Route::get('/monitoring/{id}', [Monitoring::class, 'client']);
+    Route::get('/monitoring/{id}', [MonitoringController::class, 'client']);
 
     //get client's letters based on its status
-    Route::get('/monitoring/{id}/{status}',[Monitoring::class,'status']);
+    Route::get('/monitoring/{id}/{status}',[MonitoringController::class,'status']);
 });
 

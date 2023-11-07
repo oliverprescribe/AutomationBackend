@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Index;
-use App\Http\Controllers\Emails;
+use App\Http\Controllers\IndexController;
+use App\Http\Controllers\LetterDeleteTaskTestingController;
+use App\Http\Controllers\TestingController;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -18,8 +19,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/mail', [Emails::class, 'index']);
-Route::get('/timedifference', [Index::class, 'automationEmailTest']);
-Route::get('/letterdelete', [Index::class, 'deleteLetter']);
+Route::get('/mail', [TestingController::class, 'email']);
+Route::get('/timedifference', [TestingController::class, 'automationEmailTest']);
+// Route::get('/letterdelete', [TestingController::class, 'deleteLetter']);
+Route::get('/letterdelete', [LetterDeleteTaskTestingController::class, 'letter_delete_task']);
+
+
+
+
 
 
